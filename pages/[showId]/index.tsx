@@ -1,12 +1,14 @@
 import { ApolloProvider } from "@apollo/client"
 
 import { client } from "@/lib/getQuery"
-import HomePage from "@/components/Layout/HomePage"
+import PerAnimePage from "@/components/Layout/PerAnimePage"
 
-export default function IndexPage() {
+const AnimeHomePage = () => {
   return (
     <ApolloProvider client={client}>
-      <HomePage />
+      <PerAnimePage />
     </ApolloProvider>
   )
 }
+
+export default AnimeHomePage

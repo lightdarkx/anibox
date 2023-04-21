@@ -1,7 +1,9 @@
 import type { AppProps } from "next/app"
 import { Inter as FontSans } from "@next/font/google"
 import { ThemeProvider } from "next-themes"
+import { Provider } from "react-redux"
 
+import { store } from "@/lib/store/store"
 import "@/styles/globals.css"
 
 const fontSans = FontSans({
@@ -13,14 +15,16 @@ const fontSans = FontSans({
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      <style jsx global>{`
+      <Provider store={store}>
+        <style jsx global>{`
 				:root {
 					--font-sans: ${fontSans.style.fontFamily};
 				}
 			}`}</style>
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <Component {...pageProps} />
-      </ThemeProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </Provider>
     </>
   )
 }

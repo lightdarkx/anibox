@@ -1,0 +1,134 @@
+import { useEffect, useState } from "react"
+import { gql, useQuery } from "@apollo/client"
+
+import { SEASON_LIST } from "@/lib/query"
+import Card from "@/components/UI/Card"
+
+const HomePage = () => {
+  /* const [aniData, setAniData] = useState([])
+
+  const handleError = (error) => {
+    console.error(error)
+  }
+
+  useEffect(() => {
+    const url = "https://graphql.anilist.co",
+      options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          query: SEASON_LIST,
+          variables: {
+            page: 1,
+            currentSeason: "WINTER",
+            currentYear: 2023,
+          },
+        }),
+      }
+
+    const handleResponse = (response) => {
+      return response.json().then(function (json) {
+        return response.ok ? json : Promise.reject(json)
+      })
+    }
+
+    const handleData = (data) => {
+      console.log(data.data.Page.media[0].title.romaji)
+      const listItems = data.data.Page.media.map((items) => {
+        return {
+          title: items.title.romaji,
+          cover: items.coverImage.large,
+        }
+      })
+
+      setAniData(listItems)
+      console.log("STATE")
+      console.log(aniData)
+    }
+
+    fetch(url, options).then(handleResponse).then(handleData).catch(handleError)
+  }, [aniData.length])
+
+  console.log(aniData) 
+  return (
+    <div className="grid place-items-center">
+      {aniData.map((item, idx) => {
+        return <li key={idx}>{item.title}</li>
+      })}
+
+      {aniData.map((item) => {
+        return <Card title={item.title} cover={item.cover} />
+      })}
+    </div>
+  )
+  */
+
+  const ANIDATA = gql`
+    {
+      Page(page: 1, perPage: 6) {
+        pageInfo {
+          total
+          lastPage
+        }
+        media(type: ANIME, season: WINTER) {
+          title {
+            romaji
+          }
+          coverImage {
+            large
+          }
+        }
+      }
+    }
+  `
+
+  //console.log(ANIDATA)
+  const { loading, error, data } = useQuery(ANIDATA)
+  /*
+  , {
+    variables: { currentSeason: "SUMMER" },
+    pollInterval: 1000,
+  })
+  */
+  //console.log(error.message)
+
+  let display // = <p>{data}</p>
+  if (loading) {
+    display = <p>Loading...</p>
+  }
+  if (error) {
+    display = <p> Error: {error.message}</p>
+    return <p> Error: {error.message}</p>
+  }
+  /* const listItems = data.Page.media.map((items) => {
+    return {
+      title: items.title.romaji,
+      cover: items.coverImage.large,
+    }
+  })
+
+  console.log(listItems) */
+
+  return (
+    <div className="grid place-items-center">
+      <p>{display}</p>
+      {/* <div>
+        {listItems.map((item) => {
+          return <Card title={item.title} cover={item.cover} />
+        })}
+      </div> */}
+      <div>
+        {data.Page.media.map((item) => {
+          return (
+            <Card title={item.title.romaji} cover={item.coverImage.large} />
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+export default HomePage
