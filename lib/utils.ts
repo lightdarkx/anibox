@@ -35,3 +35,36 @@ export const getMonth = (data: number) => {
       return "Not a valid number!"
   }
 }
+
+export const getDateTimeFromUnixTime = (value: number) => {
+  const dateObject = new Date(value * 1000) // accounting for ms conversion
+  return {
+    date: dateObject.toLocaleDateString(undefined),
+    time: dateObject.toLocaleTimeString(undefined),
+  }
+}
+
+export const getTimeLeft = (value: number) => {
+  const dd = Math.floor(value / 86400)
+  const hh = Math.floor((value % 86400) / 3600)
+  const mm = Math.floor(((value % 86400) % 3600) / 60)
+
+  if (dd === 0) {
+    if (hh === 0) {
+      return `${mm}m`
+    }
+    return `${hh}h ${mm}m`
+  }
+
+  return `${dd}d ${hh}h ${mm}m`
+}
+
+export const getRelationType = (value: string) => {
+  //if (value === "ADAPTATION") return "source"
+  switch (value) {
+    case "ADAPTATION":
+      return "source"
+    case "SIDE_STORY":
+      return "side story"
+  }
+}

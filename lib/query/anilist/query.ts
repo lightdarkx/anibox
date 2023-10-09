@@ -132,6 +132,11 @@ export const PER_ANIME = `#graphql
       genres
       type
       format
+      nextAiringEpisode {
+        episode
+        airingAt
+        timeUntilAiring
+      }
       episodes
       duration
       startDate {

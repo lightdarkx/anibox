@@ -1,11 +1,16 @@
+import { useState } from "react"
 import { useRouter } from "next/router"
 import { gql, useQuery } from "@apollo/client"
 
 import { PER_ANIME } from "@/lib/query/anilist/query"
-import { getMonth } from "@/lib/utils"
+import { getRelationType } from "@/lib/utils"
+import Hero from "./perAnimePage/Hero"
+import MoreDetails from "./perAnimePage/MoreDetails"
+import Sidebar from "./perAnimePage/Sidebar"
 
 const PerAnimePage = () => {
   const route = useRouter()
+
   //console.log(route)
 
   const ANIDATA = gql`
@@ -24,55 +29,32 @@ const PerAnimePage = () => {
     return <p> Error: {error.message}</p>
   }
 
-  console.log(data)
+  //console.log(data)
 
   const title = data.Media.title.romaji
   const coverImage = data.Media.coverImage.large
   const description = data.Media.description.replace("<br><br><br />", "<br />")
+  const hashtagArr = data.Media.hashtag?.split("#")
+  // MAY BE USED:
+  const studio = data.Media.studios.edges
+  const characters = data.Media.characters.edges
 
-  const studio = data.Media.studios.edge
+  //console.log(characters)
+  //console.log(characters[0].voiceActors[0])
+  console.log(data.Media.staff.edges)
+  //console.log(data.Media.relations.edges)
 
-  console.log(studio)
   return (
-    <>
-      <p>PerPageAnime:</p>
-      <p>{route.query.showId}</p>
-      <div className="grid grid-cols-2">
-        <img src={coverImage} alt="coverImage" />
-        <div>
-          <p className="text-2xl">{title}</p>
-          <br />
-          <div
-            className="text-sm"
-            dangerouslySetInnerHTML={{ __html: description }}
-          ></div>
+    <div className="grid">
+      <div className="border-blue-500 border-8 mx-auto lg:max-w-5xl w-full">
+        <p>PerPageAnime: {route.query.showId}</p>
+        <Hero coverImage={coverImage} title={title} description={description} />
+        <div className=" border-red-500 border-8 grid grid-cols-[205px_auto] gap-6 w-full">
+          <Sidebar data={data} hashtagArr={hashtagArr} />
+          <MoreDetails data={data} characters={characters} />
         </div>
       </div>
-      <div>
-        <p>Format </p>
-        <p>{data.Media.format}</p>
-        <p>Episodes </p>
-        <p>{data.Media.episodes}</p>
-        <p>Episode Duration</p>
-        <p>{data.Media.format}</p>
-        <p>Start Date</p>
-        <p>
-          {getMonth(data.Media.startDate.month)} {data.Media.startDate.day},{" "}
-          {data.Media.startDate.year}
-        </p>
-        <p>Season</p>
-        <p>
-          {/* TODO: css first letter of season */}
-          {data.Media.season} {data.Media.seasonYear}
-        </p>
-        <p>Studio</p>
-        <p>{data.Media.format}</p>
-        <p>Format: </p>
-        <p>{data.Media.format}</p>
-        <p>Format: </p>
-        <p>{data.Media.format}</p>
-      </div>
-    </>
+    </div>
   )
 }
 
