@@ -1,7 +1,7 @@
 export const SEASON_LIST = `#graphql 
-query ($currentSeason: MediaSeason, $currentYear: Int, $page: Int) {
-   Page(page: $page, perPage: 5) {
-    media(type: ANIME, status_in: [RELEASING, NOT_YET_RELEASED], isAdult: false, sort: TITLE_ROMAJI, season: $currentSeason, seasonYear: $currentYear) {
+query ($currentSeason: MediaSeason, $currentYear: Int, $page: Int, $sort: [MediaSort]) {
+   Page(page: $page, perPage: 6) {
+    media(type: ANIME, status_in: [RELEASING, NOT_YET_RELEASED], isAdult: false, sort: $sort, season: $currentSeason, seasonYear: $currentYear) {
         id
         title {
             romaji
@@ -9,6 +9,7 @@ query ($currentSeason: MediaSeason, $currentYear: Int, $page: Int) {
         coverImage {
             large
         }
+        bannerImage
     }
    } 
 }`

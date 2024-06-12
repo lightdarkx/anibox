@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import Link from "next/link"
 import { useRouter } from "next/router"
 import { useAppSelector } from "@/hooks/reduxHooks"
 import { useMutation, useQuery } from "@apollo/client"
@@ -9,6 +10,7 @@ import {
 } from "@/lib/query/backend/mutation"
 import { WATCH_LIST } from "@/lib/query/backend/query"
 import CardList from "@/components/UI/CardList"
+import { Button } from "@/components/ui/button"
 
 const ProfilePage = () => {
   const route = useRouter()
@@ -78,7 +80,7 @@ const ProfilePage = () => {
   return (
     <>
       <h1>
-        RouteId: {route.query.userId} UserId: {user_id}
+        Profile Page: RouteId: {route.query.userId} UserId: {user_id}
       </h1>
       {watchlists.map((item) => {
         return (
@@ -94,6 +96,9 @@ const ProfilePage = () => {
           />
         )
       })}
+      <Button>
+        <Link href="/">Home</Link>
+      </Button>
     </>
   )
 }

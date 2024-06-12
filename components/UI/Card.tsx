@@ -1,4 +1,4 @@
-//import Image from "next/image"
+import Image from "next/image"
 import Link from "next/link"
 
 import { Button } from "../ui/button"
@@ -6,12 +6,20 @@ import { Button } from "../ui/button"
 const Card = (props) => {
   return (
     <>
-      <div className="w-max rounded-xl border-4 border-solid border-sky-500 p-8">
-        <img alt="coverImage" src={props.cover} />
+      <div className="min-w-fit rounded-xl border-2 border-solid border-sky-500 p-0 my-2">
         <Link href={`/${props.id}`}>
-          <p className=" max-w-[250px] text-ellipsis">{props.title}</p>
+          <Image
+            alt="coverImage"
+            src={props.cover}
+            height={224}
+            width={150}
+            className="rounded-xl"
+          />
+          <p className=" max-w-[150px] pt-2 text-ellipsis text-center text-sm">
+            {props.title}
+          </p>
         </Link>
-        <p>{props.id}</p>
+        {/*<p>{props.id}</p> */}
 
         {/* <Button onClick={}>Add</Button> */}
       </div>
